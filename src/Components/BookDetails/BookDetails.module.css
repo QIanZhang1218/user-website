@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.mainContent{
+    border: 1px solid green;
+    margin: auto;
+    display: flex;
+    flex-flow: column nowrap;
+}
+.bookImg{
+    height: 100%;
+    width: 200px;
+    border: 1px solid blue;
+}
+.img{
+    height: 200px;
+    max-width:120px;
+}
+.bookInfo{
+    text-align: left;
+    margin-left: 10px;
+    width: 100%;
+}
+.availableBox{
+    margin-top: 1px;
+    height: 20px;
+    line-height: 20px;
+    vertical-align: middle;
+    margin-bottom: 15px;
+}
+.availableFont{
+    margin-left: 2px;
+    display: inline-block;
+    height: 25px;
+    vertical-align: middle;
+    color: forestgreen;
+}
+.location{
+    height: 25px;
+}
+.title{
+    font-weight: 800;
+    color: #000000;
+}
+.item{
+    margin-left: 20px;
+    font-size: 14px;
+    color: #6f6f6f;
+}
+.sectionInfo{
+    line-height: 25px;
+    margin-left: 25px;
+}
+.holdButton{
+    margin-top: 50px;
+}

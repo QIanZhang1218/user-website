@@ -1,0 +1,34 @@
+.listUl{
+    border-bottom: 1px solid lightgray;
+}
+.listLi{
+    display: flex;
+    flex-flow: row wrap;
+}
+.bookInfoBox{
+    width:90% ;
+    display: flex;
+    flex-flow: row;
+}
+.bookImg{
+    max-width: 80px;
+    max-height: 100px;
+}
+.bookInfo{
+    width: 99%;
+    margin-left: 60px;
+    padding-right: 80px;
+
+}
+.bookLocation{
+    display: block;
+    width: 150px;
+    height: 100px;
+    flex-flow: column;
+    justify-content: space-between;
+    color: #418ee1;
+}
+.summaryInfo{
+    color: gray;
+    display: inline;
+}
