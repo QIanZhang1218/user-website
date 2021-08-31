@@ -43,6 +43,7 @@ export default function AlignItemsList() {
                         alignItems="flex-start" className={HomepageMain.listLi} key={item.bookId}
                     >
                         <ListItemAvatar>
+
                             <img className={HomepageMain.bookImg} src={item.bookImg}  alt={'Image failed to load'}/>
                         </ListItemAvatar>
                         <div className={HomepageMain.bookInfoBox}>

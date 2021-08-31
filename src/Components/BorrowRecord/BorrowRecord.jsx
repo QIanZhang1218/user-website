@@ -83,6 +83,11 @@ export default function StickyHeadTable() {
         setPage(0);
     };
 
+    function handleExtendClick(event){
+        event.preventDefault();
+        console.log(event.target.id);
+    }
+
     return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
@@ -105,10 +110,32 @@ export default function StickyHeadTable() {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={data.code}>
                                     {columns.map((column) => {
-                                        const value = data[column.id]
-                                        if (column.id ==="button"){
-                                            return (<td className={BR.extendTd}><Button className={BR.extendBtn} id={data.recordId}>EXTEND</Button></td>);
+                                        const value = data[column.id];
+                                        const currentDate = new Date().getTime();
+                                        const returnDate = new Date(data.returnDate).getTime();
+                                        // console.log(data.returnDate);
+                                        if(currentDate > returnDate){
+                                            if (column.id ==="button"){
+                                                return (
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Overdue</button></td>
+                                                );
+                                            }
                                         }
+                                        else if( data.status == true){
+                                            if (column.id ==="button"){
+                                                return (
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Returned</button></td>
+                                                );
+                                            }
+                                        }
+                                        else {
+                                            if (column.id ==="button"){
+                                                return (
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
+                                                );
+                                            }
+                                        }
+
                                         return (
                                             <TableCell key={column.id} align={column.align}>
                                                 {/*{column.format && typeof value === 'number' ? column.format(value) : value}*/}
