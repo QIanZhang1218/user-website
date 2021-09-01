@@ -153,6 +153,7 @@ export default function PersistentDrawerLeft() {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [input, setInput] = React.useState("");
 
     const handleDrawerOpen = () => {
         console.log(this);
@@ -162,6 +163,12 @@ export default function PersistentDrawerLeft() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const handleOnChange = (e) => {
+        e.preventDefault();
+        setInput(e.target.value);
+        console.log(e.target.value);
+    }
 
     return (
         <div className={classes.root}>
@@ -196,12 +203,14 @@ export default function PersistentDrawerLeft() {
                                 input: classes.inputInput,
                             }}
                             inputProps={{ 'aria-label': 'search' }}
+                            value={input}
+                            onChange={handleOnChange}
                         />
-                        <div className={classes.searchButton}>
-                            <Button variant="contained">
-                                search
-                            </Button>
-                        </div>
+                        {/*<div className={classes.searchButton}>*/}
+                        {/*    <Button variant="contained">*/}
+                        {/*        search*/}
+                        {/*    </Button>*/}
+                        {/*</div>*/}
                     </div>
                 </Toolbar>
             </AppBar>

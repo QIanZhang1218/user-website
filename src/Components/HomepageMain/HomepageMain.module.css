@@ -32,3 +32,9 @@
     color: gray;
     display: inline;
 }
+.inputSearch{
+    height:35px;
+    width: 300px;
+    font-weight: 400;
+    border: 1px solid #e0e0e0;
+}
