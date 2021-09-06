@@ -7,26 +7,27 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
+// import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import SearchIcon from '@material-ui/icons/Search';
+// import SearchIcon from '@material-ui/icons/Search';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import {Link,Route} from 'react-router-dom';
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 import HomepageMain from '../HomepageMain/HomepageMIain';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
 import BookDetails from '../BookDetails/BookDetails';
 import BorrowRecord from '../BorrowRecord/BorrowRecord';
+import AboutLibrary from "../AboutLibrary/AboutLibrary";
 
 const drawerWidth = 240;
 
@@ -164,11 +165,11 @@ export default function PersistentDrawerLeft() {
         setOpen(false);
     };
 
-    const handleOnChange = (e) => {
-        e.preventDefault();
-        setInput(e.target.value);
-        console.log(e.target.value);
-    }
+    // const handleOnChange = (e) => {
+    //     e.preventDefault();
+    //     setInput(e.target.value);
+    //     console.log(e.target.value);
+    // }
 
     return (
         <div className={classes.root}>
@@ -192,26 +193,27 @@ export default function PersistentDrawerLeft() {
                     <Typography variant="h6" noWrap>
                         Library
                     </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={input}
-                            onChange={handleOnChange}
-                        />
-                        {/*<div className={classes.searchButton}>*/}
-                        {/*    <Button variant="contained">*/}
-                        {/*        search*/}
-                        {/*    </Button>*/}
-                        {/*</div>*/}
-                    </div>
+                    {/*Search bar*/}
+                    {/*<div className={classes.search}>*/}
+                    {/*    <div className={classes.searchIcon}>*/}
+                    {/*        <SearchIcon />*/}
+                    {/*    </div>*/}
+                    {/*    <InputBase*/}
+                    {/*        placeholder="Search…"*/}
+                    {/*        classes={{*/}
+                    {/*            root: classes.inputRoot,*/}
+                    {/*            input: classes.inputInput,*/}
+                    {/*        }}*/}
+                    {/*        inputProps={{ 'aria-label': 'search' }}*/}
+                    {/*        value={input}*/}
+                    {/*        onChange={handleOnChange}*/}
+                    {/*    />*/}
+                    {/*    <div className={classes.searchButton}>*/}
+                    {/*        <Button variant="contained">*/}
+                    {/*            search*/}
+                    {/*        </Button>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -230,12 +232,12 @@ export default function PersistentDrawerLeft() {
                 </div>
                 <Divider />
                 <List>
-                    {/*{['Login', 'Signup', 'BorrowRecord', 'Logout'].map((text, index) => (*/}
-                    {/*    <ListItem button key={text}>*/}
-                    {/*        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
-                    {/*        <ListItemText primary={text} />*/}
-                    {/*    </ListItem>*/}
-                    {/*))}*/}
+                    <ListItem component={Link} to="/AboutLibrary" button>
+                        <ListItemIcon>
+                            <LockOpenIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="AboutLibrary" />
+                    </ListItem>
                     <ListItem component={Link} to="/" button>
                         <ListItemIcon>
                             <LockOpenIcon />
@@ -277,6 +279,7 @@ export default function PersistentDrawerLeft() {
             >
 
             <Route path="/" component={HomepageMain} exact/>
+            <Route path="/AboutLibrary" component={AboutLibrary} />
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
             <Route path="/BorrowRecord" component={BorrowRecord}/>

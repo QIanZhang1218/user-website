@@ -10,8 +10,9 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import axios from "axios";
 import HomepageMain from "../HomepageMain/HomepageMain.module.css";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import BR from "../BorrowRecord/BorrowRecord.module.css";
+import {useHistory} from "react-router-dom";
 
 const columns = [
     { id: 'bookName', label: 'Boook Name', minWidth: 170 },
@@ -59,6 +60,7 @@ const useStyles = makeStyles({
 });
 
 export default function StickyHeadTable() {
+    let history = useHistory();
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -67,9 +69,14 @@ export default function StickyHeadTable() {
 
     useEffect(() => {
         axios.get( "/api/BookList/GetBorrowRecords",).then(response => {
-            setData(response.data);
-            setLoading(false);
-        });
+            if(response.data.success == true){
+                setData(response.data.bookList);
+                setLoading(false);
+            }
+            else{
+                history.push("SignIn");
+            }
+        })
     }, []);
     if (isLoading) {
         return <div className={HomepageMain.listUl}>Loading...</div>;

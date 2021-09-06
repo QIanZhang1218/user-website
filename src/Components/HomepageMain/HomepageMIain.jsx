@@ -7,9 +7,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom'
 import {alpha, makeStyles} from '@material-ui/core/styles';
+// import ResponsiveCarousel from "../ResponsiveCarousel/ResponsiveCarousel"
 import HomepageMain from './HomepageMain.module.css';
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,9 +59,51 @@ const useStyles = makeStyles((theme) => ({
 export default function AlignItemsList() {
     const classes = useStyles();
     const [isLoading, setLoading] = useState(true);
-    // const [data, setData] = useState("");
-    //const [input, setInput] = useState("");
-    //search
+    //search tab
+    const [currentTab, setCurrentTab] = useState('tab1');
+    const tabList = [
+        {
+            name: 'tab1',
+            label: 'Book',
+            content: (
+                <div className="tab-content">
+                    <div className={classes.search}>
+                        <label>Search: </label>
+                        <input className={HomepageMain.inputSearch}
+                               type="text"
+                               placeholder="  Search Book Name"
+                               classes={{
+                                   root: classes.inputRoot,
+                                   input: classes.inputInput,
+                               }}
+                               onChange={(event) =>handleOnChangeTitle(event)}
+                        />
+                    </div>
+                </div>
+            )
+        },
+        {
+            name: 'tab2',
+            label: 'Author',
+            content: (
+                <div className="tab-content">
+                    <div className={classes.search}>
+                        <label>Search: </label>
+                        <input className={HomepageMain.inputSearch}
+                               type="text"
+                               placeholder="  Search Author Name"
+                               classes={{
+                                   root: classes.inputRoot,
+                                   input: classes.inputInput,
+                               }}
+                               onChange={(event) =>handleOnChangeAuthor(event)}
+                        />
+                    </div>
+                </div>
+            )
+        },
+    ];
+    //searchbar
     const [allData,setAllData] = useState([]);
     const [filteredData,setFilteredData] = useState(allData);
     useEffect(() => {
@@ -76,7 +117,7 @@ export default function AlignItemsList() {
     if (isLoading) {
         return <div className={HomepageMain.listUl}>Loading...</div>;
     }
-    const handleOnChange = (event) => {
+    const handleOnChangeTitle = (event) => {
         event.preventDefault();
         // setInput(event.target.value);
         let value = event.target.value;
@@ -88,26 +129,62 @@ export default function AlignItemsList() {
         console.log(result);
         setFilteredData(result);
     }
+    const handleOnChangeAuthor = (event) => {
+        event.preventDefault();
+        // setInput(event.target.value);
+        let value = event.target.value;
+        console.log(value);
+        let result = [];
+        result = allData.filter((data) => {
+            return data.bookAuthor.toLowerCase().search(value) != -1;
+        });
+        console.log(result);
+        setFilteredData(result);
+    }
 
     return (
-        <div>
-            <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                    <SearchIcon />
+        <div className={HomepageMain.mainBox}>
+            {/*<CaroselTest/>*/}
+            <div className={HomepageMain.searchBox}>
+                <h1>XXXXXLibrary</h1>
+                <h1>Kia ora, what are you looking for?</h1>
+                <div className={HomepageMain.tabBox}>
+                    {
+                        tabList.map((tab, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setCurrentTab(tab.name)}
+                                className={HomepageMain.tabBtn}>
+                                {/*className={(tab.name === currentTab) ? 'active' : ''}>*/}
+                                {tab.label}
+                            </button>
+                        ))
+                    }
                 </div>
-                <input className={HomepageMain.inputSearch}
-                    type="text"
-                    placeholder="Search…"
-                    classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                    }}
-                    // inputProps={{ 'aria-label': 'search' }}
-                    // value={input}
-                    onChange={(event) =>handleOnChange(event)}
-                    // onChange={handleOnChange}
-                />
+                {
+                    tabList.map((tab, i) => {
+                        if(tab.name === currentTab) {
+                            return <div key={i}>{tab.content}</div>;
+                        } else {
+                            return null;
+                        }
+                    })
+                }
             </div>
+            {/*<div className={classes.search}>*/}
+            {/*    <div className={classes.searchIcon}>*/}
+            {/*        <SearchIcon />*/}
+            {/*    </div>*/}
+            {/*    <input className={HomepageMain.inputSearch}*/}
+            {/*        type="text"*/}
+            {/*        placeholder="Search…"*/}
+            {/*        classes={{*/}
+            {/*            root: classes.inputRoot,*/}
+            {/*            input: classes.inputInput,*/}
+            {/*        }}*/}
+            {/*        onChange={(event) =>handleOnChange(event)}*/}
+            {/*    />*/}
+            {/*</div>*/}
             <List className={HomepageMain.listUl}>
             {filteredData.map((item,index ) => {
                 return(
@@ -116,7 +193,6 @@ export default function AlignItemsList() {
                 button
                 to={"./BookDetails/BookDetails.jsx?id="+item.bookId}
                 alignItems="flex-start" className={HomepageMain.listLi} key={item.bookId}
-                key = {item.bookId}
                 >
                 <ListItemAvatar>
 

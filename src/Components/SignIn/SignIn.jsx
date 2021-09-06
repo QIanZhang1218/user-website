@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
 
+
 // function Copyright() {
 //   return (
 //     <Typography variant="body2" color="textSecondary" align="center">
@@ -26,6 +27,7 @@ import axios from "axios";
 //     </Typography>
 //   );
 // }
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,14 +66,17 @@ export default function SignIn() {
       headers: {
         'deviceCode': 'A95ZEF1-47B5-AC90BF3'
       },
-      contentType:'application/json'
-      ,
+      contentType:'application/json',
       data: {
         email: para.email,
         password:para.password
       }}).then((Result) => {
-          if (Result.data.status === 'Success')
-            history.push("/HomepageMain")
+        console.log(Result.data);
+          if (Result.data.success === true){
+            document.cookie=""+Result.data.token;
+            history.push("/")
+          }
+
           else
             alert('Sorrrrrry !!!! Un-authenticated User !!!!!')
         })
