@@ -7,21 +7,18 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-// import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-// import SearchIcon from '@material-ui/icons/Search';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import {Link,Route} from 'react-router-dom';
-// import { Button } from '@material-ui/core';
 import HomepageMain from '../HomepageMain/HomepageMIain';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
@@ -150,11 +147,24 @@ const useStyles = makeStyles((theme) => ({
         },
 }));
 
+//Log out clear cookie
+function handleLogOut(){
+    let cookie = document.cookie;
+    let exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    if(window.confirm("Are you sure?")){
+        if(cookie != null){
+            document.cookie= cookie+";expires="+exp.toGMTString();
+            window.location.href="../SignIn";
+        }
+
+    }
+}
+
 export default function PersistentDrawerLeft() {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-    const [input, setInput] = React.useState("");
 
     const handleDrawerOpen = () => {
         console.log(this);
@@ -164,13 +174,6 @@ export default function PersistentDrawerLeft() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
-    // const handleOnChange = (e) => {
-    //     e.preventDefault();
-    //     setInput(e.target.value);
-    //     console.log(e.target.value);
-    // }
-
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -193,27 +196,6 @@ export default function PersistentDrawerLeft() {
                     <Typography variant="h6" noWrap>
                         Library
                     </Typography>
-                    {/*Search bar*/}
-                    {/*<div className={classes.search}>*/}
-                    {/*    <div className={classes.searchIcon}>*/}
-                    {/*        <SearchIcon />*/}
-                    {/*    </div>*/}
-                    {/*    <InputBase*/}
-                    {/*        placeholder="Search…"*/}
-                    {/*        classes={{*/}
-                    {/*            root: classes.inputRoot,*/}
-                    {/*            input: classes.inputInput,*/}
-                    {/*        }}*/}
-                    {/*        inputProps={{ 'aria-label': 'search' }}*/}
-                    {/*        value={input}*/}
-                    {/*        onChange={handleOnChange}*/}
-                    {/*    />*/}
-                    {/*    <div className={classes.searchButton}>*/}
-                    {/*        <Button variant="contained">*/}
-                    {/*            search*/}
-                    {/*        </Button>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -262,7 +244,7 @@ export default function PersistentDrawerLeft() {
                         </ListItemIcon>
                         <ListItemText primary="BorrowRecord" />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem onClick={handleLogOut} button>
                         <ListItemIcon>
                             <AccountBoxIcon />
                         </ListItemIcon>
@@ -278,12 +260,12 @@ export default function PersistentDrawerLeft() {
                 })}
             >
 
-            <Route path="/" component={HomepageMain} exact/>
-            <Route path="/AboutLibrary" component={AboutLibrary} />
-            <Route path="/signin" component={SignIn} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/BorrowRecord" component={BorrowRecord}/>
-            <Route path="/BookDetails/:id"  component={BookDetails}/>
+                <Route path="/" component={HomepageMain} exact/>
+                <Route path="/AboutLibrary" component={AboutLibrary} />
+                <Route path="/signin" component={SignIn} />
+                <Route path="/signup" component={SignUp} />
+                <Route path="/BorrowRecord" component={BorrowRecord}/>
+                <Route path="/BookDetails/:id"  component={BookDetails}/>
             </main>
         </div>
     );
