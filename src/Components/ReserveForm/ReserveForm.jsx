@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom"
+import {useHistory, useLocation} from "react-router-dom"
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -10,10 +10,11 @@ import {
 } from '@material-ui/pickers';
 // import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
-
+// import SignIn from "../SignIn/SignIn";
 let bookId;
-
+// var token =document.cookie.split(";")[0].split("=")[1];
 export default function ReserveForm(props) {
+    let history = useHistory();
     let userId = '1';
     // const { register, handleSubmit } = useForm<FormValues>();
     const hash = useLocation()
@@ -29,7 +30,8 @@ export default function ReserveForm(props) {
         var para = {
             bookId,userId,borrowDate
         }
-        console.log(para);
+        // let signInStatus;
+        // console.log(para);
         axios({
             url: '/api/BookList/ReserveBooks',
             method: 'post',
@@ -39,6 +41,15 @@ export default function ReserveForm(props) {
             contentType:'application/json'
             ,
             data: para
+        }).then((res) => {
+            console.log(res.data);
+            if (res.data.success === false){
+                history.push("/SignIn")
+            }
+            else{
+                alert('Reserve Successful')
+                history.push("/")
+            }
         })
     }
     // const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
