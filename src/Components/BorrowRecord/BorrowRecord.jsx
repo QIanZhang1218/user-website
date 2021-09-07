@@ -46,6 +46,12 @@ const columns = [
         label: 'Extend',
         minWidth: 100,
     },
+    {
+        id: 'penaltyStatus',
+        label: 'Pay Penalty',
+        align:'center',
+        minWidth: 80
+    }
 
 ];
 
@@ -57,7 +63,7 @@ const useStyles = makeStyles({
         maxHeight: 440,
     },
 });
-
+let payPenaltyBtn;
 export default function StickyHeadTable() {
     let history = useHistory();
     const classes = useStyles();
@@ -117,28 +123,60 @@ export default function StickyHeadTable() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={data.code}>
                                     {columns.map((column) => {
                                         const value = data[column.id];
-                                        const currentDate = new Date().getTime();
-                                        const returnDate = new Date(data.returnDate).getTime();
-                                        // console.log(data.returnDate);
-                                        if(currentDate > returnDate){
-                                            if (column.id ==="button"){
-                                                return (
-                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Overdue</button></td>
-                                                );
+                                        const currentDate = new Date().toDateString();
+                                        const returnDate = new Date(data.returnDate).toDateString();
+                                        const currentTime = new Date().getTime()
+                                        const returnTime = new Date(data.returnDate).getTime();
+                                        const timeDif = currentTime-returnTime;
+                                        //button style control.
+                                        //If expired return date but still not return book then display overdue button.
+                                        //If the book was return on time then display returned button
+                                        //If the book is still on hold and not expire the return date then display extend button which allows reader to extend borrow period 7 days a time.
+                                        if(currentDate != returnDate  && data.status == false){
+                                            if(timeDif >0){
+                                                if (column.id ==="button"){
+                                                    return (
+                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Overdue</button></td>
+                                                    );
+                                                }
+                                            }else if (timeDif <= 0){
+                                                if (column.id ==="button"){
+                                                    return (
+                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
+                                                    );
+                                                }
                                             }
-                                        }
-                                        else if( data.status == true){
+                                        }else if( data.status == true){
                                             if (column.id ==="button"){
                                                 return (
                                                     <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Returned</button></td>
                                                 );
                                             }
-                                        }
-                                        else {
+                                        }else{
                                             if (column.id ==="button"){
                                                 return (
                                                     <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
                                                 );
+                                            }
+                                        }
+                                        //change the color of penalty amount
+                                        if (column.id === "penalty") {
+                                            if (data.penalty >0){
+                                                return(
+                                                    <td className={BR.penaltyAmount}>{data.penalty}</td>
+                                                )
+                                            }
+                                        }
+                                        //If unpaid
+                                        if (column.id === "penaltyStatus"){
+                                            if (data.penalty >0 && data.penaltyStatus == false){
+                                                return(
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.payBtn}>Pay</button></td>
+                                                )
+                                            }else if(data.penalty > 0  && data.penaltyStatus == true){
+                                                return(
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disable" >Paid</button></td>
+                                                )
                                             }
                                         }
 
@@ -165,6 +203,7 @@ export default function StickyHeadTable() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
+            <div>{payPenaltyBtn}</div>
         </Paper>
     );
 }

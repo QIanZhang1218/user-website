@@ -26,8 +26,8 @@ import BookDetails from '../BookDetails/BookDetails';
 import BorrowRecord from '../BorrowRecord/BorrowRecord';
 import AboutLibrary from "../AboutLibrary/AboutLibrary";
 import Header from "../Header/Header.module.css"
-const drawerWidth = 240;
 
+const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -213,7 +213,7 @@ export default function PersistentDrawerLeft() {
                         </ListItemIcon>
                         <ListItemText primary="SignUp" />
                     </ListItem>
-                    <ListItem component={Link} to="/BorrowRecord" button>
+                    <ListItem component={Link} to="/Borrow Record" button>
                         <ListItemIcon>
                             <AccountBoxIcon />
                         </ListItemIcon>
