@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { alpha, makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -25,7 +25,7 @@ import SignUp from '../SignUp/SignUp';
 import BookDetails from '../BookDetails/BookDetails';
 import BorrowRecord from '../BorrowRecord/BorrowRecord';
 import AboutLibrary from "../AboutLibrary/AboutLibrary";
-
+import Header from "../Header/Header.module.css"
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -93,46 +93,6 @@ const useStyles = makeStyles((theme) => ({
                 display: 'block',
             },
         },
-        search: {
-            position: 'relative',
-            borderRadius: theme.shape.borderRadius,
-            backgroundColor: alpha(theme.palette.common.white, 0.15),
-            '&:hover': {
-                backgroundColor: alpha(theme.palette.common.white, 0.25),
-            },
-            marginRight: theme.spacing(2),
-            marginLeft: 0,
-            width: '100%',
-            [theme.breakpoints.up('sm')]: {
-                marginLeft: theme.spacing(3),
-                width: 'auto',
-            },
-        },
-        searchIcon: {
-            padding: theme.spacing(0, 2),
-            height: '100%',
-            position: 'absolute',
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        searchButton: {
-            display:'inline-flex'
-        },
-        inputRoot: {
-            color: 'inherit',
-        },
-        inputInput: {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-            transition: theme.transitions.create('width'),
-            width: '100%',
-            [theme.breakpoints.up('md')]: {
-                width: '20ch',
-            },
-        },
         sectionDesktop: {
             display: 'none',
             [theme.breakpoints.up('md')]: {
@@ -152,15 +112,21 @@ function handleLogOut(){
     let cookie = document.cookie;
     let exp = new Date();
     exp.setTime(exp.getTime() - 1);
-    if(window.confirm("Are you sure?")){
+    if(window.confirm("Are you sure to log out?")){
         if(cookie != null){
             document.cookie= cookie+";expires="+exp.toGMTString();
-            window.location.href="../SignIn";
+            window.location.href="/";
         }
 
     }
 }
 
+//Open Signin page
+function openSignin(){
+    window.location.href="../SignIn"
+}
+
+let userName;
 export default function PersistentDrawerLeft() {
     const classes = useStyles();
     const theme = useTheme();
@@ -174,6 +140,11 @@ export default function PersistentDrawerLeft() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    if(document.cookie == ""){
+        userName = <button className={Header.headerButton} onClick={openSignin}>Sign In</button>
+    }else{
+        userName = <button className={Header.headerButton} onClick={handleLogOut}>Log Out</button>
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -196,6 +167,10 @@ export default function PersistentDrawerLeft() {
                     <Typography variant="h6" noWrap>
                         Library
                     </Typography>
+                    {/*User Name*/}
+                    <div className={Header.buttonBox}>
+                        <h6>{userName}</h6>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -218,7 +193,7 @@ export default function PersistentDrawerLeft() {
                         <ListItemIcon>
                             <LockOpenIcon />
                         </ListItemIcon>
-                        <ListItemText primary="AboutLibrary" />
+                        <ListItemText primary="About Library" />
                     </ListItem>
                     <ListItem component={Link} to="/" button>
                         <ListItemIcon>

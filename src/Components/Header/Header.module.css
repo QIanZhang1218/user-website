@@ -1,0 +1,14 @@
+.buttonBox{
+    position: absolute;
+    right: 10px;
+}
+.headerButton{
+    height: 35px;
+    width: 100px;
+    line-height: 35px;
+    font-size: 14px;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #ffffff;
+}
