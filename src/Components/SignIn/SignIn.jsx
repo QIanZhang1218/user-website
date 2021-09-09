@@ -51,12 +51,12 @@ export default function SignIn() {
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
 
-  function handleSignUp(event){
+  function handleSignIn(event){
     event.preventDefault();
     var para = {
       email,password
     }
-    console.log(para);
+    // console.log(para);
     axios({
       url: '/api/SignIn/VerifySignIn',
       method: 'post',
@@ -70,7 +70,7 @@ export default function SignIn() {
       }}).then((Result) => {
         console.log(Result.data);
           if (Result.data.success === true){
-            document.cookie=""+Result.data.token;
+            document.cookie="token="+Result.data.token;
             window.location.href="/";
           }
 
@@ -88,7 +88,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} onSubmit={handleSignUp}>
+        <form className={classes.form} onSubmit={handleSignIn}>
           <TextField onInput={ e=>setEmail(e.target.value)}
             variant="outlined"
             margin="normal"

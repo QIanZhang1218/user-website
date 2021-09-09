@@ -114,7 +114,7 @@ function handleLogOut(){
     exp.setTime(exp.getTime() - 1);
     if(window.confirm("Are you sure to log out?")){
         if(cookie != null){
-            document.cookie= cookie+";expires="+exp.toGMTString();
+            document.cookie= "token="+cookie+";expires="+exp.toGMTString();
             window.location.href="/";
         }
 
@@ -213,11 +213,11 @@ export default function PersistentDrawerLeft() {
                         </ListItemIcon>
                         <ListItemText primary="SignUp" />
                     </ListItem>
-                    <ListItem component={Link} to="/Borrow Record" button>
+                    <ListItem component={Link} to="/BorrowRecord" button>
                         <ListItemIcon>
                             <AccountBoxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="BorrowRecord" />
+                        <ListItemText primary="Borrow Record" />
                     </ListItem>
                     <ListItem onClick={handleLogOut} button>
                         <ListItemIcon>

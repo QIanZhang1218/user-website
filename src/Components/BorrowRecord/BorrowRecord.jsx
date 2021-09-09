@@ -31,13 +31,13 @@ const columns = [
         id: 'status',
         label: 'Status',
         minWidth: 100,
-        format:(value) => {
-          if (value == 0){
-              return ("On hold");
-          }else if(value == 1){
-              return ("Return");
-          }
-        },
+        // format:(value) => {
+        //   if (value == 0){
+        //       return ("On hold");
+        //   }else if(value == 1){
+        //       return ("Return");
+        //   }
+        // },
     },
     { id: 'penalty', label: 'Penalty', minWidth: 80 },
     {
@@ -70,11 +70,15 @@ export default function StickyHeadTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isLoading, setLoading] = useState(true);
+    const [record,setRecord] = useState(true);
     const [data,setData] = React.useState();
 
     useEffect(() => {
         axios.get( "/api/BookList/GetBorrowRecords",).then(response => {
-            if(response.data.success == true){
+            if(response.data.message === "No records"){
+               setRecord(false);
+            }
+            if(response.data.success){
                 setData(response.data.bookList);
                 setLoading(false);
             }
@@ -85,6 +89,9 @@ export default function StickyHeadTable() {
     }, []);
     if (isLoading) {
         return <div className={HomepageMain.listUl}>Loading...</div>;
+    }
+    if(!record){
+        return <div className={HomepageMain.listUl}>No relative records</div>;
     }
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -128,6 +135,28 @@ export default function StickyHeadTable() {
                                         const currentTime = new Date().getTime()
                                         const returnTime = new Date(data.returnDate).getTime();
                                         const timeDif = currentTime-returnTime;
+                                        // change status display
+                                        if(data.pickUpStatus == false){
+                                            if (column.id ==="status"){
+                                                return(
+                                                    <td className={BR.statusTd}>Reserved</td>
+                                                )
+                                            }
+                                        }else{
+                                            if (data.status){
+                                                if (column.id ==="status"){
+                                                    return(
+                                                        <td className={BR.statusTd}>Return</td>
+                                                    )
+                                                }
+                                            }else{
+
+                                                if (column.id ==="status"){
+                                                    return(
+                                                        <td className={BR.statusTd}>On hold</td>
+                                                    )
+                                                }
+                                            }                                        }
                                         //button style control.
                                         //If expired return date but still not return book then display overdue button.
                                         //If the book was return on time then display returned button

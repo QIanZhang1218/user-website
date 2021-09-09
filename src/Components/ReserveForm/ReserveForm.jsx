@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useHistory, useLocation} from "react-router-dom"
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
@@ -15,10 +15,11 @@ let bookId;
 // var token =document.cookie.split(";")[0].split("=")[1];
 export default function ReserveForm(props) {
     let history = useHistory();
-    let userId = '1';
+    // let userId = '1';
     // const { register, handleSubmit } = useForm<FormValues>();
     const hash = useLocation()
-    const [borrowDate, setBorrowDate] = React.useState(new Date());
+    const [borrowDate, setBorrowDate] = useState(new Date());
+    const [userId,setUserId] = useState();
     // const [userId,setUserId] = useState();
 
     const handleDateChange = (date) => {
@@ -44,7 +45,13 @@ export default function ReserveForm(props) {
         }).then((res) => {
             console.log(res.data);
             if (res.data.success === false){
-                history.push("/SignIn")
+                if (res.data.message=="Have not sign in."){
+                    history.push("/SignIn");
+                }else if (res.data.message=="You have overdue books or unpaid fines"){
+                    alert(res.data.message);
+                    history.push("/BorrowRecord");
+                }
+
             }
             else{
                 alert('Reserve Successful')
