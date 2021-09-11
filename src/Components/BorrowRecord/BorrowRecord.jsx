@@ -81,8 +81,7 @@ export default function StickyHeadTable() {
             if(response.data.success){
                 setData(response.data.bookList);
                 setLoading(false);
-            }
-            else{
+            }else{
                 history.push("SignIn");
             }
         })
