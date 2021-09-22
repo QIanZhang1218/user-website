@@ -28,7 +28,7 @@ const columns = [
         format:(value) => value.substring(0, 10),
     },
     {
-        id: 'status',
+        id: 'borrowStatus',
         label: 'Status',
         minWidth: 100,
         // format:(value) => {
@@ -135,32 +135,47 @@ export default function StickyHeadTable() {
                                         const returnTime = new Date(data.returnDate).getTime();
                                         const timeDif = currentTime-returnTime;
                                         // change status display
-                                        if(data.pickUpStatus == false){
-                                            if (column.id ==="status"){
-                                                return(
-                                                    <td className={BR.statusTd}>Reserved</td>
-                                                )
+                                        if (column.id ==="borrowStatus"){
+                                            console.log(data);
+                                            switch(data.borrowStatus) {
+                                                case 10:
+                                                    return (<td className={BR.statusTd}>Reserved</td>);
+                                                case 20:
+                                                    return (<td className={BR.statusTd}>On hold</td>)
+                                                case 30:
+                                                    return(<td className={BR.statusTd}>Returned</td>)
+                                                case 40:
+                                                    return(<td className={BR.statusTd}>Overdue</td>)
+                                                default:
+                                                    return (<td className={BR.statusTd}>Null</td>);
                                             }
-                                        }else{
-                                            if (data.status){
-                                                if (column.id ==="status"){
-                                                    return(
-                                                        <td className={BR.statusTd}>Return</td>
-                                                    )
-                                                }
-                                            }else{
-
-                                                if (column.id ==="status"){
-                                                    return(
-                                                        <td className={BR.statusTd}>On hold</td>
-                                                    )
-                                                }
-                                            }                                        }
+                                        }
+                                        // if(data.borrowStatus == 10){
+                                        //     if (column.id ==="borrowStatus"){
+                                        //         return(
+                                        //             <td className={BR.statusTd}>Reserved</td>
+                                        //         )
+                                        //     }
+                                        // }else{
+                                        //     if (data.status){
+                                        //         if (column.id ==="status"){
+                                        //             return(
+                                        //                 <td className={BR.statusTd}>Return</td>
+                                        //             )
+                                        //         }
+                                        //     }else{
+                                        //
+                                        //         if (column.id ==="status"){
+                                        //             return(
+                                        //                 <td className={BR.statusTd}>On hold</td>
+                                        //             )
+                                        //         }
+                                        //     }                                        }
                                         //button style control.
                                         //If expired return date but still not return book then display overdue button.
                                         //If the book was return on time then display returned button
                                         //If the book is still on hold and not expire the return date then display extend button which allows reader to extend borrow period 7 days a time.
-                                        if(currentDate != returnDate  && data.status == false){
+                                        if(currentDate != returnDate  && data.borrowStatus == 20){
                                             if(timeDif >0){
                                                 if (column.id ==="button"){
                                                     return (
@@ -174,7 +189,7 @@ export default function StickyHeadTable() {
                                                     );
                                                 }
                                             }
-                                        }else if( data.status == true){
+                                        }else if( data.borrowStatus == 30){
                                             if (column.id ==="button"){
                                                 return (
                                                     <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Returned</button></td>
