@@ -13,8 +13,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
@@ -26,6 +24,12 @@ import BookDetails from '../BookDetails/BookDetails';
 import BorrowRecord from '../BorrowRecord/BorrowRecord';
 import AboutLibrary from "../AboutLibrary/AboutLibrary";
 import Header from "../Header/Header.module.css"
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -191,13 +195,13 @@ export default function PersistentDrawerLeft() {
                 <List>
                     <ListItem component={Link} to="/AboutLibrary" button>
                         <ListItemIcon>
-                            <LockOpenIcon />
+                            <InfoOutlinedIcon />
                         </ListItemIcon>
                         <ListItemText primary="About Library" />
                     </ListItem>
                     <ListItem component={Link} to="/" button>
                         <ListItemIcon>
-                            <LockOpenIcon />
+                            <HomeOutlinedIcon />
                         </ListItemIcon>
                         <ListItemText primary="Home" />
                     </ListItem>
@@ -209,19 +213,19 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
                     <ListItem component={Link} to="/signup" button>
                         <ListItemIcon>
-                            <PersonOutlineIcon />
+                            <ExitToAppOutlinedIcon />
                         </ListItemIcon>
                         <ListItemText primary="SignUp" />
                     </ListItem>
                     <ListItem component={Link} to="/BorrowRecord" button>
                         <ListItemIcon>
-                            <AccountBoxIcon />
+                            <ListAltOutlinedIcon />
                         </ListItemIcon>
                         <ListItemText primary="Borrow Record" />
                     </ListItem>
                     <ListItem onClick={handleLogOut} button>
                         <ListItemIcon>
-                            <AccountBoxIcon />
+                            <ExitToAppIcon />
                         </ListItemIcon>
                         <ListItemText primary="LogOut" />
                     </ListItem>
