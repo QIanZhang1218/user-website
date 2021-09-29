@@ -57,26 +57,6 @@ export default function BookDetails(props) {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    // function PlaceHold(event){
-    //
-    //     event.preventDefault();
-    //     var para = {
-    //         bookId
-    //     }
-    //     console.log(typeof(para));
-    //     axios({
-    //         url: '/api/BookList/ReserveBooks',
-    //         method: 'post',
-    //         headers: {
-    //             'deviceCode': 'A95ZEF1-47B5-AC90BF3'
-    //         },
-    //         contentType:'application/json'
-    //         ,
-    //         data: {
-    //             bookId: para.bookId,
-    //         }})
-    // }
-
     return(
         <React.Fragment>
         <div className={BD.mainContent}>
@@ -124,42 +104,5 @@ export default function BookDetails(props) {
         </React.Fragment>
     )
 }
-
-    // constructor(props,context) {
-    //     super(props,context);
-    //     console.info(props);
-    //     this.bookId = parseInt(Object.values(
-    //             qs.parse(this.props.location.search.slice(1))
-    //     ));
-    //     this.state = {
-    //         posts: []
-    //     };
-    // }
-
-    // componentDidMount(){
-    //     axios.get("/api/BookList/GetBooksDetail",{
-    //         params:{
-    //             bookId: this.bookId
-    //         }
-    //     })
-    //         .then(res => {
-    //             const posts = res.data[0].map(obj => obj.data);
-    //             this.setState({posts});
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
-    // }
-    // render(){
-    //     return (
-    //         {data.map(post =>
-    //                     <div className={BD.mainContent}>
-    //                         <div className={BD.bookImg}>
-    //                             <img className={HomepageMain.bookImg} src={posts.bookImg}></img>
-    //                         </div>
-    //                     </div>
-    //                 )}
-    //     )
-    // }
 
 

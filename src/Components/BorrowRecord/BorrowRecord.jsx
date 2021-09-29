@@ -14,6 +14,12 @@ import BR from "../BorrowRecord/BorrowRecord.module.css";
 import {useHistory} from "react-router-dom";
 
 const columns = [
+    {
+        id: 'reserveDate',
+        label: 'Reserve Date',
+        minWidth: 150,
+        format: (value) => value.substring(0, 10),
+    },
     { id: 'bookName', label: 'Boook Name', minWidth: 170 },
     {
         id: 'borrowDate',
@@ -129,79 +135,84 @@ export default function StickyHeadTable() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={data.code}>
                                     {columns.map((column) => {
                                         const value = data[column.id];
-                                        const currentDate = new Date().toDateString();
-                                        const returnDate = new Date(data.returnDate).toDateString();
-                                        const currentTime = new Date().getTime()
-                                        const returnTime = new Date(data.returnDate).getTime();
-                                        const timeDif = currentTime-returnTime;
+                                        // const currentDate = new Date().toDateString();
+                                        // const returnDate = new Date(data.returnDate).toDateString();
+                                        // const currentTime = new Date().getTime()
+                                        // const returnTime = new Date(data.returnDate).getTime();
+                                        // const timeDif = currentTime-returnTime;
                                         // change status display
                                         if (column.id ==="borrowStatus"){
-                                            console.log(data);
+                                            const penalty = data.penalty;
+                                            const penaltyStatues = data.penaltyStatus;
+                                            console.log(penalty);
+                                            console.log(penaltyStatues);
                                             switch(data.borrowStatus) {
                                                 case 10:
                                                     return (<td className={BR.statusTd}>Reserved</td>);
                                                 case 20:
+                                                    if(penalty > 0 && penaltyStatues==0){
+                                                        return(<td className={BR.statusTd} style={{ color: 'red',fontWeight : 600 }}>Overdue</td>)
+                                                    }
                                                     return (<td className={BR.statusTd}>On hold</td>)
                                                 case 30:
                                                     return(<td className={BR.statusTd}>Returned</td>)
                                                 case 40:
-                                                    return(<td className={BR.statusTd}>Overdue</td>)
+                                                    return(<td className={BR.statusTd} style={{ color: 'red',fontWeight : 600 }}>Overdue</td>)
+                                                case 99:
+                                                    return(<td className={BR.statusTd} style={{ color: 'dimgrey' }}>Cancelled</td>)
                                                 default:
                                                     return (<td className={BR.statusTd}>Null</td>);
                                             }
                                         }
-                                        // if(data.borrowStatus == 10){
-                                        //     if (column.id ==="borrowStatus"){
-                                        //         return(
-                                        //             <td className={BR.statusTd}>Reserved</td>
-                                        //         )
-                                        //     }
-                                        // }else{
-                                        //     if (data.status){
-                                        //         if (column.id ==="status"){
-                                        //             return(
-                                        //                 <td className={BR.statusTd}>Return</td>
-                                        //             )
-                                        //         }
-                                        //     }else{
-                                        //
-                                        //         if (column.id ==="status"){
-                                        //             return(
-                                        //                 <td className={BR.statusTd}>On hold</td>
-                                        //             )
-                                        //         }
-                                        //     }                                        }
                                         //button style control.
                                         //If expired return date but still not return book then display overdue button.
                                         //If the book was return on time then display returned button
                                         //If the book is still on hold and not expire the return date then display extend button which allows reader to extend borrow period 7 days a time.
-                                        if(currentDate != returnDate  && data.borrowStatus == 20){
-                                            if(timeDif >0){
-                                                if (column.id ==="button"){
+                                        if( data.borrowStatus == 10){
+                                            if (column.id ==="button"){
                                                     return (
-                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Overdue</button></td>
+                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
                                                     );
                                                 }
-                                            }else if (timeDif <= 0){
+                                        }else if(data.borrowStatus == 20){
+                                            if (data.penalty >0 && data.penaltyStatus == 0){
                                                 if (column.id ==="button"){
+                                                    return (
+                                                            <td className={BR.extendTd}></td>
+                                                    );
+                                                }}
+                                            else {
+                                                if(column.id ==="button"){
                                                     return (
                                                         <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
                                                     );
                                                 }
                                             }
-                                        }else if( data.borrowStatus == 30){
+                                       }else if( data.borrowStatus == 30){
                                             if (column.id ==="button"){
-                                                return (
-                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disabled">Returned</button></td>
-                                                );
+                                                    return (
+                                                        <td className={BR.extendTd}></td>
+                                                    );
                                             }
-                                        }else{
+                                       }else if (data.borrowStatus == 40){
+                                            if (column.id ==="button"){
+                                                    return (
+                                                        <td className={BR.extendTd}></td>
+                                                    );
+                                            }
+                                       }else if( data.borrowStatus == 99){
+                                            if (column.id ==="button"){
+                                                    return (
+                                                        <td className={BR.extendTd}></td>
+                                                    );
+                                            }
+                                       }else{
                                             if (column.id ==="button"){
                                                 return (
                                                     <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
                                                 );
                                             }
-                                        }
+                                      }
                                         //change the color of penalty amount
                                         if (column.id === "penalty") {
                                             if (data.penalty >0){
@@ -212,13 +223,13 @@ export default function StickyHeadTable() {
                                         }
                                         //If unpaid
                                         if (column.id === "penaltyStatus"){
-                                            if (data.penalty >0 && data.penaltyStatus == false){
+                                            if (data.penalty >0 && data.penaltyStatus == false && data.borrowStatus ==30){
                                                 return(
                                                     <td className={BR.extendTd}><button id={data.recordId} className={BR.payBtn}>Pay</button></td>
                                                 )
                                             }else if(data.penalty > 0  && data.penaltyStatus == true){
                                                 return(
-                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.disableBtn} disabled="disable" >Paid</button></td>
+                                                    <td className={BR.extendTd}>Paid</td>
                                                 )
                                             }
                                         }

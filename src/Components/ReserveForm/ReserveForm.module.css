@@ -18,3 +18,10 @@
     line-height: 10px;
     padding: 16px;
 }
+.containerDiv{
+    margin-top: 20%;;
+}
+.submitBtn{
+    background-color: #3f51b5;
+    color: #ffffff;
+}

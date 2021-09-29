@@ -171,20 +171,6 @@ export default function AlignItemsList() {
                     })
                 }
             </div>
-            {/*<div className={classes.search}>*/}
-            {/*    <div className={classes.searchIcon}>*/}
-            {/*        <SearchIcon />*/}
-            {/*    </div>*/}
-            {/*    <input className={HomepageMain.inputSearch}*/}
-            {/*        type="text"*/}
-            {/*        placeholder="Search…"*/}
-            {/*        classes={{*/}
-            {/*            root: classes.inputRoot,*/}
-            {/*            input: classes.inputInput,*/}
-            {/*        }}*/}
-            {/*        onChange={(event) =>handleOnChange(event)}*/}
-            {/*    />*/}
-            {/*</div>*/}
             <List className={HomepageMain.listUl}>
             {filteredData.map((item,index ) => {
                 return(
