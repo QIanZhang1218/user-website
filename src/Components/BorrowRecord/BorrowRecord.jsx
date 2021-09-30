@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import {Modal} from 'react-bootstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,6 +13,9 @@ import axios from "axios";
 import HomepageMain from "../HomepageMain/HomepageMain.module.css";
 import BR from "../BorrowRecord/BorrowRecord.module.css";
 import {useHistory} from "react-router-dom";
+import PayPenalty from "../PayPnealty/PayPenalty";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 const columns = [
     {
@@ -69,7 +73,7 @@ const useStyles = makeStyles({
         maxHeight: 440,
     },
 });
-let payPenaltyBtn;
+// let payPenaltyBtn;
 export default function StickyHeadTable() {
     let history = useHistory();
     const classes = useStyles();
@@ -77,7 +81,18 @@ export default function StickyHeadTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isLoading, setLoading] = useState(true);
     const [record,setRecord] = useState(true);
-    const [data,setData] = React.useState();
+    const [data,setData] = useState();
+    const [item,setItem] = useState("");
+    //react bootstrap modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = (data) => {
+        //event.preventDefault();
+        //console.log(data);
+        setItem(data);
+         setShow(true);
+    }
+    const promise = loadStripe("pk_test_51JfBnYBuZCt7GKI5c6lgOY1ZoLrzBa5qwzqpQ10tEfCbjqMiGL7QrA3aAvR8Tyyhp0Paj7HYAwDIro42TjFGdEii00BAtVHilN");
 
     useEffect(() => {
         axios.get( "/api/BookList/GetBorrowRecords",).then(response => {
@@ -103,13 +118,36 @@ export default function StickyHeadTable() {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
+        setRowsPerPage(event.target.value);
         setPage(0);
     };
 
     function handleExtendClick(event){
         event.preventDefault();
-        console.log(event.target.id);
+        const recordId = event.target.id;
+        var para = {
+            recordId
+        }
+        console.log(recordId);
+        axios({
+            url: '/api/BookList/ExtendBorrowTime',
+            method: 'post',
+            headers: {
+                'deviceCode': 'A95ZEF1-47B5-AC90BF3'
+            },
+            contentType:'application/json'
+            ,
+            data: {
+                recordId: para.recordId
+            }}).then(response => {
+                alert(response.data.message);
+                window.location.href="/BorrowRecord";
+            }
+        )
+
+    }
+    function handlePay(event){
+        console.log(event.target);
     }
 
     return (
@@ -135,17 +173,10 @@ export default function StickyHeadTable() {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={data.code}>
                                     {columns.map((column) => {
                                         const value = data[column.id];
-                                        // const currentDate = new Date().toDateString();
-                                        // const returnDate = new Date(data.returnDate).toDateString();
-                                        // const currentTime = new Date().getTime()
-                                        // const returnTime = new Date(data.returnDate).getTime();
-                                        // const timeDif = currentTime-returnTime;
                                         // change status display
                                         if (column.id ==="borrowStatus"){
                                             const penalty = data.penalty;
                                             const penaltyStatues = data.penaltyStatus;
-                                            console.log(penalty);
-                                            console.log(penaltyStatues);
                                             switch(data.borrowStatus) {
                                                 case 10:
                                                     return (<td className={BR.statusTd}>Reserved</td>);
@@ -225,7 +256,7 @@ export default function StickyHeadTable() {
                                         if (column.id === "penaltyStatus"){
                                             if (data.penalty >0 && data.penaltyStatus == false && data.borrowStatus ==30){
                                                 return(
-                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.payBtn}>Pay</button></td>
+                                                    <td className={BR.extendTd}><button id={data.recordId} className={BR.payBtn} onClick={()=>handleShow(data)}>Pay</button></td>
                                                 )
                                             }else if(data.penalty > 0  && data.penaltyStatus == true){
                                                 return(
@@ -257,7 +288,18 @@ export default function StickyHeadTable() {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <div>{payPenaltyBtn}</div>
+            {/*<div>{payPenaltyBtn}</div> */}
+            {/*react bootstrap modal*/}
+            <Modal show={show} onHide={handleClose} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Pay penalty</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Elements stripe={promise}>
+                        <PayPenalty record= {item} />
+                    </Elements>
+                </Modal.Body>
+            </Modal>
         </Paper>
     );
 }
