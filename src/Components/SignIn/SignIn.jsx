@@ -70,7 +70,7 @@ export default function SignIn() {
       }}).then((Result) => {
         console.log(Result.data);
           if (Result.data.success === true){
-            document.cookie="token="+Result.data.token;
+            document.cookie="user_token="+Result.data.token;
             window.location.href="/";
           }
 

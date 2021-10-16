@@ -7,6 +7,15 @@
     padding: 5px 16px;
     background-color: #ffffff;
 }
+.cancelBtn{
+    color: #6b6a6a;
+    border: 1px solid #6b6a6a;
+    border-radius: 4px;
+    font-size: 12px;
+    height: 30px;
+    padding: 5px 16px;
+    background-color: #ffffff;
+}
 .disableBtn{
     color: rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(0, 0, 0, 0.6);;

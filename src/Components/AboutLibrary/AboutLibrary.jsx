@@ -7,6 +7,7 @@ import { AiFillPhone } from 'react-icons/ai';
 import "bootstrap/dist/css/bootstrap.min.css";
 import AboutLibraryStyle from './AboutLobrary.module.css';
 import { Button } from "react-bootstrap";
+import axios from "axios";
 export default function AboutLibrary(){
     const [name,setName] = useState('');
     const [email,setEmail]=useState('');
@@ -17,6 +18,22 @@ export default function AboutLibrary(){
             name,email,message
         }
         console.log(para);
+        axios({
+            url: '/api/BookList/SaveUserMessage',
+            method: 'post',
+            headers: {
+                'deviceCode': 'A95ZEF1-47B5-AC90BF3'
+            },
+            contentType:'application/json'
+            ,
+            data: {
+                readerName:para.name,
+                readerEmail:para.email,
+                readerMessage:para.message
+             }}).then(response =>{
+            alert(response.data.message);
+            window.location.href="/AboutLibrary";
+        })
     }
      return(
          <div className={AboutLibraryStyle.container}>
@@ -78,7 +95,7 @@ export default function AboutLibrary(){
                          </div>
                      </li>
                  </ul>
-                 <p>Send us a message</p>
+                 <h5>Send us a message</h5>
                  <Form style={{textAlign:'left'}} onSubmit={handleSubmit}>
                      <Form.Group as={Row} className="mb-3" controlId="formPlaintextName">
                          <Form.Label column sm="2">

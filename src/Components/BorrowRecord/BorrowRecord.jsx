@@ -41,21 +41,15 @@ const columns = [
         id: 'borrowStatus',
         label: 'Status',
         minWidth: 100,
-        // format:(value) => {
-        //   if (value == 0){
-        //       return ("On hold");
-        //   }else if(value == 1){
-        //       return ("Return");
-        //   }
-        // },
     },
     { id: 'penalty', label: 'Penalty', minWidth: 80 },
     {
         id: 'button',
         align:'center',
-        label: 'Extend',
+        label: 'Action',
         minWidth: 100,
     },
+
     {
         id: 'penaltyStatus',
         label: 'Pay Penalty',
@@ -90,7 +84,7 @@ export default function StickyHeadTable() {
         //event.preventDefault();
         //console.log(data);
         setItem(data);
-         setShow(true);
+        setShow(true);
     }
     const promise = loadStripe("pk_test_51JfBnYBuZCt7GKI5c6lgOY1ZoLrzBa5qwzqpQ10tEfCbjqMiGL7QrA3aAvR8Tyyhp0Paj7HYAwDIro42TjFGdEii00BAtVHilN");
 
@@ -146,9 +140,33 @@ export default function StickyHeadTable() {
         )
 
     }
-    function handlePay(event){
-        console.log(event.target);
+    //Cancel reservation
+    function handleCancelClick(data){
+        const recordId = data.recordId;
+        const borrowStatus = data.borrowStatus
+
+        var para = {
+            recordId,borrowStatus
+        }
+        console.log(para);
+        axios({
+            url: '/api/BookList/CancelReservation',
+            method: 'post',
+            headers: {
+                'deviceCode': 'A95ZEF1-47B5-AC90BF3'
+            },
+            contentType:'application/json'
+            ,
+            data: {
+                recordId: para.recordId,
+                borrowStatus: para.borrowStatus
+            }}).then(response => {
+                alert(response.data.message);
+                window.location.href="/BorrowRecord";
+            }
+        )
     }
+
 
     return (
         <Paper className={classes.root}>
@@ -202,7 +220,7 @@ export default function StickyHeadTable() {
                                         if( data.borrowStatus == 10){
                                             if (column.id ==="button"){
                                                     return (
-                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.extendBtn} onClick={handleExtendClick}>EXTEND</button></td>
+                                                        <td className={BR.extendTd}><button id={data.recordId} className={BR.cancelBtn} onClick={()=>handleCancelClick(data)}>Cancel</button></td>
                                                     );
                                                 }
                                         }else if(data.borrowStatus == 20){

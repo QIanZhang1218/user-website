@@ -52,3 +52,6 @@ h2{
     margin: 5px;
     display: inline-block;
 }
+.introSection h5{
+    text-align: left;
+}

@@ -114,11 +114,10 @@ const useStyles = makeStyles((theme) => ({
 //Log out clear cookie
 function handleLogOut(){
     let cookie = document.cookie;
-    let exp = new Date();
-    exp.setTime(exp.getTime() - 1);
     if(window.confirm("Are you sure to log out?")){
         if(cookie != null){
-            document.cookie= "token="+cookie+";expires="+exp.toGMTString();
+            document.cookie = "user_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            //document.cookie= "user_token"+"="+cookie+";expires="+exp.toGMTString();
             window.location.href="/";
         }
 
@@ -149,6 +148,7 @@ export default function PersistentDrawerLeft() {
     }else{
         userName = <button className={Header.headerButton} onClick={handleLogOut}>Log Out</button>
     }
+
     return (
         <div className={classes.root}>
             <CssBaseline />
